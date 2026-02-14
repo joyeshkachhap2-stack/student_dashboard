@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Result</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background: black;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Background pulse */
+        body::before {
+            content: "";
+            position: fixed;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,255,255,0.1), transparent 70%);
+            animation: pulse 4s infinite;
+            top: -50%;
+            left: -50%;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .loader {
+            margin-top: 150px;
+            font-size: 22px;
+            letter-spacing: 2px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0.3; }
+        }
+
+        .result-card {
+            display: none;
+            margin: 80px auto;
+            width: 80%;
+            max-width: 600px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px cyan;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glow {
+            text-shadow: 0 0 15px cyan;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        .risk-high { color: red; text-shadow: 0 0 15px red; }
+        .risk-medium { color: orange; text-shadow: 0 0 15px orange; }
+        .risk-low { color: lightgreen; text-shadow: 0 0 15px lightgreen; }
+
+        .btn {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .download { background: cyan; color: black; }
+        .whatsapp { background: #25D366; color: white; }
+
+        a { text-decoration: none; }
+
+    </style>
+</head>
+
+<body>
+
+<div id="loader" class="loader">
+    🤖 AI is analyzing student performance...
+</div>
+
+<div id="resultCard" class="result-card">
+
+    <div class="glow">AI Analysis Complete</div>
+
+    <p><strong>Name:</strong> {{ name }}</p>
+    <p><strong>Final Result:</strong> {{ result }}</p>
+
+    <p>
+        <strong>Risk Level:</strong>
+        <span class="
+        {% if risk == 'High Risk' %}risk-high
+        {% elif risk == 'Medium Risk' %}risk-medium
+        {% else %}risk-low{% endif %}
+        ">
+        {{ risk }}
+        </span>
+    </p>
+
+    <p><strong>AI Suggestion:</strong> {{ suggestion }}</p>
+
+    <a href="/reports/{{ pdf_file }}" class="btn download">Download PDF</a>
+    <a href="{{ whatsapp_link }}" target="_blank" class="btn whatsapp">Send via WhatsApp</a>
+
+    <br><br>
+    <a href="/" style="color:cyan;">Analyze Another Student</a>
+
+</div>
+
+<script>
+    // Simulate AI processing delay
+    setTimeout(function() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("resultCard").style.display = "block";
+    }, 3000); // 3 second AI thinking effect
+</script>
+
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!doctype html>
+<html>
+<head>
+  <title>AI Student Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease infinite;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .card {
+      width: 900px;
+      max-width: 95%;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 40px rgba(0,255,255,0.5);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 0 0 15px cyan;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    input, select {
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      font-size: 14px;
+    }
+
+    select {
+      appearance: none;
+    }
+    select {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 14px;
+}
+
+/* Fix dropdown options */
+select option {
+  background: #0f2027;
+  color: white;
+}
+
+/* Fix optgroup */
+select optgroup {
+  background: #203a43;
+  color: cyan;
+}
+
+
+    input:focus, select:focus {
+      outline: none;
+      box-shadow: 0 0 12px cyan;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .btn-ai {
+      margin-top: 20px;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: cyan;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-ai:hover {
+      box-shadow: 0 0 20px cyan;
+      background: white;
+    }
+
+    .subject-container {
+      grid-column: span 2;
+    }
+
+    .subject-field {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .remove-btn {
+      background: red;
+      border: none;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .add-btn {
+      background: #00ffcc;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+    }
+
+    ::placeholder {
+      color: #ddd;
+    }
+
+
+    .footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  padding: 12px 0;
+  font-size: 13px;
+  letter-spacing: 1px;
+  border-top: 1px solid cyan;
+  box-shadow: 0 0 15px rgba(0,255,255,0.4);
+}
+
+.footer-content {
+  color: #ccc;
+}
+
+.footer-content span {
+  color: cyan;
+}
+
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2>🤖 AI Student Performance Analyzer</h2>
+
+  <form action="/result" method="POST" enctype="multipart/form-data">
+    <div class="form-grid">
+
+      <input type="text" name="name" placeholder="Student Name" required>
+      <input type="email" name="email" placeholder="Email Address" required>
+
+      <input type="text" name="phone" placeholder="WhatsApp Number" required>
+      <input type="text" name="roll" placeholder="Roll Number" required>
+
+      <input type="text" name="reg" placeholder="Registration Number" required>
+      <input type="text" name="semester" placeholder="Current Semester" required>
+
+      <!-- Branch -->
+      <select name="branch" required>
+        <option value="">Select Branch / Stream</option>
+
+        <optgroup label="B.Tech">
+          <option value="B.Tech - CSE">B.Tech - CSE</option>
+          <option value="B.Tech - ECE">B.Tech - ECE</option>
+          <option value="B.Tech - EE">B.Tech - EE</option>
+          <option value="B.Tech - CIVIL">B.Tech - CIVIL</option>
+          <option value="B.Tech - ME">B.Tech - ME</option>
+        </optgroup>
+
+        <optgroup label="Other Courses">
+          <option value="BCA">BCA</option>
+          <option value="BSc IT">BSc IT</option>
+          <option value="BSc CS">BSc CS</option>
+          <option value="MCA">MCA</option>
+          <option value="Other">Other</option>
+        </optgroup>
+      </select>
+
+      <input type="number" name="attendance" placeholder="Attendance %" required>
+      <input type="number" name="marks" placeholder="Internal Marks" required>
+
+      <!-- Dynamic Subjects -->
+      <div class="subject-container">
+        <label>Enter Subjects:</label>
+
+        <div id="subjects-wrapper">
+          <div class="subject-field">
+            <input type="text" name="subjects" placeholder="Enter Subject Name" required>
+            <button type="button" class="remove-btn" onclick="removeSubject(this)">X</button>
+          </div>
+        </div>
+
+        <button type="button" class="add-btn" onclick="addSubject()">+ Add Subject</button>
+      </div>
+
+      <input type="file" name="photo" class="full-width" required>
+
+    </div>
+
+    <button type="submit" class="btn-ai full-width">
+      🚀 Run AI Analysis
+    </button>
+
+  </form>
+</div>
+
+<script>
+function addSubject() {
+  let wrapper = document.getElementById("subjects-wrapper");
+  let div = document.createElement("div");
+  div.className = "subject-field";
+
+  div.innerHTML = `
+    <input type="text" name="subjects" placeholder="Enter Subject Name" required>
+    <button type="button" class="remove-btn" onclick="removeSubject(this)">X</button>
+  `;
+
+  wrapper.appendChild(div);
+}
+
+function removeSubject(button) {
+  button.parentElement.remove();
+}
+</script>
+
+<footer class="footer">
+  <div class="footer-content">
+    © <span id="year"></span> AI Student Performance Analyzer  
+    | Developed by Your Name  
+    | All Rights Reserved
+  </div>
+</footer>
+
+<script>
+  // Auto update year
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

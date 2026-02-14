@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Student Report</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family:  sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .report-card {
+            width: 850px;
+            max-width: 95%;
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 0 40px rgba(0,255,255,0.4);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px cyan;
+        }
+
+        .profile-section {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-section img {
+            width: 150px;
+            height: 150px;
+            border-radius: 15px;
+            object-fit: cover;
+            box-shadow: 0 0 20px cyan;
+        }
+
+        .details p {
+            margin: 8px 0;
+        }
+
+        .subjects-list {
+            margin-top: 20px;
+        }
+
+        .subjects-list ul {
+            padding-left: 20px;
+        }
+
+        .subjects-list li {
+            margin-bottom: 6px;
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .high { background: rgba(255,0,0,0.2); color: red; }
+        .medium { background: rgba(255,165,0,0.2); color: orange; }
+        .low { background: rgba(0,255,0,0.2); color: lightgreen; }
+
+        .btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .download { background: cyan; color: black; }
+        .whatsapp { background: #25D366; color: white; }
+
+        .actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        a { text-decoration: none; }
+
+    </style>
+</head>
+
+<body>
+
+<div class="report-card">
+
+    <h2>🤖 AI Student Performance Report</h2>
+
+    <div class="profile-section">
+        <img src="{{ photo_url }}" alt="Profile Photo">
+
+        <div class="details">
+            <p><strong>Name:</strong> {{ name }}</p>
+            <p><strong>Email:</strong> {{ email }}</p>
+            <p><strong>Roll No:</strong> {{ roll }}</p>
+            <p><strong>Registration No:</strong> {{ reg }}</p>
+            <p><strong>Semester:</strong> {{ semester }}</p>
+            <p><strong>Attendance:</strong> {{ attendance }}%</p>
+            <p><strong>Marks:</strong> {{ marks }}</p>
+        </div>
+    </div>
+
+    <div class="subjects-list">
+        <h3>Subjects:</h3>
+        <ul>
+            {% for subject in subjects.split(',') %}
+                <li>{{ subject.strip() }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="result-box 
+        {% if risk == 'High Risk' %}high
+        {% elif risk == 'Medium Risk' %}medium
+        {% else %}low{% endif %}
+    ">
+        <h3>Final Result: {{ result }}</h3>
+        <p><strong>Risk Level:</strong> {{ risk }}</p>
+        <p><strong>AI Suggestion:</strong> {{ suggestion }}</p>
+    </div>
+
+    <div class="actions">
+        <a href="/reports/{{ pdf_file }}" class="btn download">Download PDF</a>
+        <a href="{{ whatsapp_link }}" target="_blank" class="btn whatsapp">Send via WhatsApp</a>
+        <br><br>
+        <a href="/" style="color:cyan;">Analyze Another Student</a>
+    </div>
+
+</div>
+
+</body>
+</html>
